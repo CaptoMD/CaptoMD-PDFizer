@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="%%LANG%%">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="assets/font-calibri.css">
+    <link rel="stylesheet" href="assets/md-print-content.css">
+    <script>
+        var eventEmitInterval = setInterval(function () {
+            document.body.dispatchEvent(new Event('view-ready'));
+        }, 25);
+
+        document.body.addEventListener('view-ready-acknowledged', function () {
+            clearInterval(eventEmitInterval);
+        });
+    </script>
+
+</head>
+<body class="is-pdf">
+%%CONTENT%%
+</body>
+</html>

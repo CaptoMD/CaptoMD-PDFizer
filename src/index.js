@@ -1,17 +1,16 @@
 /*
- * Copyright (c) 2016 CaptoMD
+ * Copyright (c) 2017 CaptoMD
  */
 
 const port = process.env.PORT || 8400;
 
-const parseArgs = require('minimist');
-const argOptions = require('./options');
 const server = require('./server');
 const PdfMaker = require('./pdf-maker');
+const PdfContentRenderer = require('./pdf-content-renderer');
+const PdfShellRenderer = require('./pdf-shell-renderer');
 
-const options = parseArgs(process.argv.slice(2), argOptions);
+const pdfMaker = new PdfMaker(new PdfContentRenderer,
+                              new PdfShellRenderer);
 
-server.use(new PdfMaker(options));
+server.use(pdfMaker);
 server.start(port);
-
-// process.exit(0);
