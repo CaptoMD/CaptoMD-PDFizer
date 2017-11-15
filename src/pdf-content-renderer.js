@@ -33,58 +33,61 @@ class PdfContentRenderer {
                 // ZIP Asset Packages:
                 const zipped = PdfContentRenderer.makeZip(template);
                 fs.writeFileSync(tempZipFile, zipped, 'binary');
+
+                // Read Zip as Buffer:
+                fs.readFile(tempZipFile, (readError, zip) =>
+                {
+                    fs.unlinkSync(tempZipFile);
+
+                    if (readError)
+                    {
+                        reject(readError);
+                        return;
+                    }
+
+                    // Send request
+                    request({
+                        url: config.ELECTRON_PDF.SERVICE,
+                        method: 'POST',
+                        body: zip,
+                        encoding: null,
+                        headers: {
+                            'Cache-Control': 'no-cache',
+                            'Content-Type': 'application/zip',
+                        },
+                    }, (err, response, body) =>
+                    {
+                        if (err)
+                        {
+                            reject(err);
+                            return;
+                        }
+
+                        if (config.DEBUG_MODE && _.has(response, 'statusCode'))
+                        {
+                            console.log(`PdfContentRenderer response: ${response.statusCode} ${response.statusMessage}`);
+                        }
+
+                        if (response.statusCode == 200)
+                        {
+                            if (config.DEBUG_MODE)
+                            {
+                                fs.writeFileSync(path.join(config.TMP_FOLDER, `content_${uuid}.pdf`), body);
+                            }
+
+                            resolve(body);
+                            return;
+                        }
+                        // console.dir(response);
+
+                        reject(new Error(`${config.ELECTRON_PDF.SERVICE}: ${response.statusCode} ${response.statusMessage}`));
+                    });
+                });
             }
             catch (err)
             {
                 reject(err);
-                return;
             }
-
-            // Read Zip as Buffer:
-            fs.readFile(tempZipFile, (readError, zip) =>
-            {
-                fs.unlinkSync(tempZipFile);
-
-                if (readError)
-                {
-                    reject(readError);
-                    return;
-                }
-
-                // Send request
-                request({
-                    url: config.ELECTRON_PDF.SERVICE,
-                    method: 'POST',
-                    body: zip,
-                    encoding: null,
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'Content-Type': 'application/zip',
-                    },
-                }, (err, response, body) =>
-                {
-                    if (err)
-                    {
-                        reject(err);
-                        return;
-                    }
-
-                    if (config.DEBUG_MODE && _.has(response, 'statusCode'))
-                    {
-                        console.log(`PdfContentRenderer response: ${response.statusCode} ${response.statusMessage}`);
-                    }
-
-                    if (response.statusCode == 200)
-                    {
-                        fs.writeFile(path.join(config.TMP_FOLDER, `content_${uuid}.pdf`), body);
-                        resolve(body);
-                        return;
-                    }
-                    // console.dir(response);
-
-                    reject(new Error(`${config.ELECTRON_PDF.SERVICE}: ${response.statusCode} ${response.statusMessage}`));
-                });
-            });
 
         });
     }

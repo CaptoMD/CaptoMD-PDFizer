@@ -3,7 +3,7 @@
   "javaScriptMode": "ENABLED",
   "userStyleSheets": [
     {
-      "uri": "assets/font-calibri.css"
+      "uri": "assets/fonts.css"
     },
     {
       "uri": "assets/md-print-shell.css"
