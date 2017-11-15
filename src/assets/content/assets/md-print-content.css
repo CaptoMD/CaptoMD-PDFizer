@@ -2707,7 +2707,7 @@ ng-transclude {
   font-size: 75%; }
 
 @page {
-  size: 183.6mm 222mm;
+  size: 183.4mm 222mm;
   margin: 0; }
 
 @page :first {
@@ -2718,7 +2718,7 @@ html, body {
 
 body {
   margin: 0;
-  font-family: "Calibri", sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: normal;
   mix-blend-mode: unset !important;
   text-shadow: none !important;

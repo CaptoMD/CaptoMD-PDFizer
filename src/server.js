@@ -27,12 +27,22 @@ class Server {
      */
     init () {
         this.app = express();
-        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.json({limit: '5mb'}));
         this.app.disable('x-powered-by');
 
         // Catch-all middleware:
         this.app.use((req, res, next) =>
         {
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Origin, Content-Type');
+
+            if (req.method === 'OPTIONS')
+            {
+                res.send([]);
+                return;
+            }
+
             if (req.method !== 'POST')
             {
                 Server.sendError(405, new Error(`Method ${req.method} Not Allowed`), req, res);
@@ -69,14 +79,14 @@ class Server {
                     {
                         // Successfully downloaded. Delete working files:
                         console.log('Download succeeded!');
-                        fs.unlink(outputFile, (ulErr) => {
-                            if (ulErr)
-                            {
-                                console.error(ulErr);
-                                return;
-                            }
-                            console.log(`File ${outputFile} deleted`);
-                        });
+                        // fs.unlink(outputFile, (ulErr) => {
+                        //     if (ulErr)
+                        //     {
+                        //         console.error(ulErr);
+                        //         return;
+                        //     }
+                        //     console.log(`File ${outputFile} deleted`);
+                        // });
                     });
                 });
 

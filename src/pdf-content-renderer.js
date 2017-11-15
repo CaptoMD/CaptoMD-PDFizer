@@ -76,6 +76,7 @@ class PdfContentRenderer {
 
                     if (response.statusCode == 200)
                     {
+                        fs.writeFile(path.join(config.TMP_FOLDER, `content_${uuid}.pdf`), body);
                         resolve(body);
                         return;
                     }
@@ -100,17 +101,17 @@ class PdfContentRenderer {
 
         _.forEach(fs.readdirSync(path.join(config.ELECTRON_PDF.SOURCE_FOLDER, 'assets')), (file) =>
         {
-            if (file !== 'font' && file !== '.DS_Store')
+            if (file !== 'fonts' && file !== '.DS_Store')
             {
                 zip.folder('assets').file(file, fs.readFileSync(path.join(config.ELECTRON_PDF.SOURCE_FOLDER, 'assets', file)));
             }
         });
 
-        _.forEach(fs.readdirSync(path.join(config.ELECTRON_PDF.SOURCE_FOLDER, 'assets/font')), (file) =>
+        _.forEach(fs.readdirSync(path.join(config.ELECTRON_PDF.SOURCE_FOLDER, 'assets/fonts')), (file) =>
         {
             if (file !== '.DS_Store')
             {
-                zip.folder('assets').folder('font').file(file, fs.readFileSync(path.join(config.ELECTRON_PDF.SOURCE_FOLDER, 'assets/font', file)));
+                zip.folder('assets').folder('fonts').file(file, fs.readFileSync(path.join(config.ELECTRON_PDF.SOURCE_FOLDER, 'assets/fonts', file)));
             }
         });
 
