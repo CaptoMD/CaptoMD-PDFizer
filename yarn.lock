@@ -655,6 +655,10 @@ setprototypeof@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/setprototypeof/-/setprototypeof-1.1.0.tgz#d0bd85536887b6fe7c0d818cb962d9d91c54e656"
 
+slugify@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.2.4.tgz#8f52cf264068a71e991459bd2aa7a2b6cd87f868"
+
 sntp@2.x.x:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/sntp/-/sntp-2.1.0.tgz#2c6cec14fedc2222739caf9b5c3d85d1cc5a2cc8"

@@ -27,7 +27,8 @@ class Server {
      */
     init () {
         this.app = express();
-        this.app.use(bodyParser.json({limit: '5mb'}));
+        // this.app.use(bodyParser.json({limit: '5mb'}));
+        this.app.use(bodyParser.urlencoded({extended: false, limit: '6mb'}));
         this.app.disable('x-powered-by');
 
         // Catch-all middleware:
@@ -43,58 +44,53 @@ class Server {
                 return;
             }
 
-            if (req.method !== 'POST')
-            {
-                Server.sendError(405, new Error(`Method ${req.method} Not Allowed`), req, res);
-            }
-
-            if (req.path !== '/')
-            {
-                Server.sendError(401, new Error(`Not Found`), req, res);
-            }
-
             next();
         });
 
         // Main route:
-        this.app.post('/', (req, res) =>
+        this.app.route('/').all((req, res, next) =>
         {
             console.info('Receiving data.');
-            this.maker.setParams(req.body);
 
-            this.maker.make().then((finalPDF) =>
+            this.maker.setParams(req.body).then(() =>
             {
-                const outputFile = path.join(config.TMP_FOLDER, 'final.pdf');
-                fs.writeFile(outputFile, finalPDF, (err) =>
+                this.maker.make().then((finalPDF) =>
                 {
-                    if (err)
+                    const outputFile = path.join(config.TMP_FOLDER, 'final.pdf');
+                    fs.writeFile(outputFile, finalPDF, (err) =>
                     {
-                        console.error(err);
-                        return;
-                    }
+                        if (err)
+                        {
+                            console.error(err);
+                            return;
+                        }
 
-                    console.log(`Final PDF! ${outputFile}`);
+                        console.log(`Final PDF! ${outputFile}`);
 
-                    res.download(outputFile, 'final.pdf', () =>
-                    {
-                        // Successfully downloaded. Delete working files:
-                        console.log('Download succeeded!');
-                        // fs.unlink(outputFile, (ulErr) => {
-                        //     if (ulErr)
-                        //     {
-                        //         console.error(ulErr);
-                        //         return;
-                        //     }
-                        //     console.log(`File ${outputFile} deleted`);
-                        // });
+                        res.setHeader('Content-disposition', 'inline; filename="' + this.maker.params.filename + '"');
+                        res.setHeader('Content-type', 'application/pdf');
+                        res.send(finalPDF);
                     });
+
+                }).catch((reason) =>
+                {
+                    if (config.DEBUG_MODE)
+                    {
+                        console.error(reason);
+                    }
+                    Server.sendError(424, new Error(reason), req, res);
                 });
 
             }).catch((reason) =>
             {
-                console.error(reason);
-                Server.sendError(500, new Error(reason), req, res);
+                const err = new Error(reason);
+                if (config.DEBUG_MODE)
+                {
+                    console.error(err);
+                }
+                Server.sendError(417, err, req, res);
             });
+
         });
 
         // Error-handling middleware (always takes four arguments):

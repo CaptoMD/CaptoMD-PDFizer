@@ -3,6 +3,7 @@
  */
 
 const _ = require('lodash');
+const slugify = require('slugify');
 
 class PdfMaker {
 
@@ -29,43 +30,56 @@ class PdfMaker {
             title: '',
             footer: '',
             lang: 'fr',
+            filename: 'output',
         };
     }
 
     /**
      *
      * @param data
+     * @return {Promise}
      */
     setParams (data) {
-        if (_.isNil(data.content))
-        {
-            throw new Error('Missing content');
-        }
 
-        if (_.isNil(data.header))
+        return new Promise((resolve, reject) =>
         {
-            throw new Error('Missing header');
-        }
-
-        this.header = data.header || null;
-        this.content = data.content || null;
-        this.params.title = data.title || 'Sans titre';
-        this.params.lang = data.lang || 'fr';
-
-        let footer = data.footer || ['', 'DIC : 3-4-4'];
-        if (_.isString(footer))
-        {
-            footer = footer.replace(/(<br>|<br \/>|\n)/i, '|');
-            footer = footer.split('|');
-        }
-        if (_.isArray(footer))
-        {
-            if (footer.length === 1)
+            if (_.isNil(data.content))
             {
-                footer.unshift('');
+                reject('Missing content');
             }
-        }
-        this.params.footer = footer;
+
+            if (_.isNil(data.header))
+            {
+                reject('Missing header');
+            }
+
+            this.header = data.header || null;
+            this.content = data.content || null;
+            this.params.title = data.title || 'Sans titre';
+            this.params.lang = data.lang || 'fr';
+            if (!_.isEmpty(data.filename))
+            {
+                const filename = slugify(data.filename);
+                this.params.filename = `${filename}.pdf`;
+            }
+
+            let footer = data.footer || ['', 'DIC : 3-4-4'];
+            if (_.isString(footer))
+            {
+                footer = footer.replace(/(<br>|<br \/>|\n)/i, '|');
+                footer = footer.split('|');
+            }
+            if (_.isArray(footer))
+            {
+                if (footer.length === 1)
+                {
+                    footer.unshift('');
+                }
+            }
+            this.params.footer = footer;
+
+            resolve();
+        });
     }
 
     /**
