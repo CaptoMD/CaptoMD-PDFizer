@@ -47,7 +47,7 @@ class PdfContentRenderer {
 
                     // Send request
                     request({
-                        url: config.ELECTRON_PDF.SERVICE,
+                        url: process.env.ELECTRON_PDF_SERVICE_URL || config.ELECTRON_PDF.SERVICE,
                         method: 'POST',
                         body: zip,
                         encoding: null,

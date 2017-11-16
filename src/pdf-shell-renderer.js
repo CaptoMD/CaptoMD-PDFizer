@@ -55,7 +55,7 @@ class PdfShellRenderer {
 
                 // Send request
                 request({
-                    url: config.PDF_REACTOR.SERVICE,
+                    url: process.env.PDF_REACTOR_SERVICE_URL || config.PDF_REACTOR.SERVICE,
                     method: 'POST',
                     body: zip,
                     encoding: null,

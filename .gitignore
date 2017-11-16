@@ -24,5 +24,6 @@ yarn-error.log*
 .idea
 *.iml
 
-
 _seed
+.DS_Store
+instructions.md
