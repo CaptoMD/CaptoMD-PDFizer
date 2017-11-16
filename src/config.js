@@ -11,7 +11,7 @@ const config = {
         SERVICE: 'http://localhost:9645/',
         SOURCE_FOLDER: 'src/assets/content',
     },
-    DEBUG_MODE: true,
+    DEBUG_MODE: false,
     TMP_FOLDER: 'tmp',
 };
 
