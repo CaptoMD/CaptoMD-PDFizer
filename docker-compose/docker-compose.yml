@@ -2,6 +2,7 @@ version: '2'
 services:
   pdfreactor:
     image: realobjects/pdfreactor
+    container_name: pdfreactor
     volumes:
     - ${DOCKER_HOST_VOLUMES}/pdfreactor:/ro/config:ro
     ports:
@@ -10,12 +11,14 @@ services:
     - ./.env
   electronpdf:
     image: captomd/captomd-electron-pdf
+    container_name: captomd-electron-pdf
     ports:
      - 9645:9645
     env_file:
     - ./.env
   pdfizer:
     image: captomd/captomd-pdfizer
+    container_name: captomd-pdfizer
     links:
     - electronpdf
     - pdfreactor
