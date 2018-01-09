@@ -1,18 +1,20 @@
-FROM node:latest
+FROM node:9-alpine
 
-# Create app directory
-RUN mkdir -p /usr/app
-WORKDIR /usr/app
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
 
-# Install app dependencies
-COPY package.json /usr/app/
-RUN yarn
+# Set a working directory
+WORKDIR /usr/src/app
 
-# Make output directory. Everything in here will be publicly accessible
-RUN mkdir -p /www
+# Install Node.js dependencies
+COPY package*.json ./
+RUN npm install
 
-# Bundle app source
-COPY . /usr/app
+# Copy application files
+COPY . .
+
+# Run the container under "node" user by default
+USER node
 
 EXPOSE 9440
 

@@ -1,0 +1,8 @@
+version: '2'
+services:
+  pdfreactor:
+    image: realobjects/pdfreactor
+    volumes:
+    - ./pdfreactor-config:/ro/config:ro
+    ports:
+    - 9423:9423

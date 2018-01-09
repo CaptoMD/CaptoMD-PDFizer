@@ -1,0 +1,6 @@
+version: '2'
+services:
+  electronpdf:
+    image: captomd/electron-pdf
+    ports:
+    - 9645:9645

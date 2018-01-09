@@ -1,0 +1,19 @@
+version: '2'
+services:
+  pdfreactor:
+    extends:
+      file: src/docker/pdfreactor.yml
+      service: pdfreactor
+  electronpdf:
+    extends:
+      file: src/docker/electronpdf.yml
+      service: electronpdf
+  pdfizer:
+    image: captomd/pdfizer
+    links:
+    - electronpdf
+    - pdfreactor
+    ports:
+     - 9440:9440
+    env_file:
+    - src/docker/.env

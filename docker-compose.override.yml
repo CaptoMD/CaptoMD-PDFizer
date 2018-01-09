@@ -1,0 +1,6 @@
+version: '2'
+services:
+  pdfizer:
+    build: .
+    environment:
+      NODE_ENV: 'development'
