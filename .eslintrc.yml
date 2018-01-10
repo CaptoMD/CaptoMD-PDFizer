@@ -1,0 +1,18 @@
+---
+env:
+  node: true
+  es6: true
+
+parserOptions:
+  ecmaVersion: 6
+
+plugins:
+- node
+
+extends:
+- plugin:node/recommended
+- airbnb-base
+
+rules:
+  no-unused-vars: [error, {argsIgnorePattern: '^_\w+', caughtErrorsIgnorePattern: '^_\w+'}]
+
