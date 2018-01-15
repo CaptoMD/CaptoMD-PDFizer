@@ -3,6 +3,6 @@ services:
   pdfreactor:
     image: realobjects/pdfreactor
     volumes:
-    - ./pdfreactor-config:/ro/config:ro
+    - ./pdfreactor-config:/ro/config
     ports:
     - 9423:9423

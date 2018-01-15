@@ -1,10 +1,9 @@
 {
-  "document": "shell.html",
+  "document": "document.html",
   "javaScriptMode": "ENABLED",
+  "logLevel": "INFO",
+  "appendLog": false,
   "userStyleSheets": [
-    {
-      "uri": "assets/fonts.css"
-    },
     {
       "uri": "assets/md-print-shell.css"
     }

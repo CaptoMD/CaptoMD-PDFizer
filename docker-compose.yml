@@ -9,7 +9,7 @@ services:
       file: src/docker/electronpdf.yml
       service: electronpdf
   pdfizer:
-    image: captomd/pdfizer
+    build: .
     links:
     - electronpdf
     - pdfreactor
