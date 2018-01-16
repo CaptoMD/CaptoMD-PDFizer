@@ -7,7 +7,9 @@ const path = require('path');
 const async = require('async');
 const JSZip = require('jszip');
 const handlebars = require('handlebars');
+
 const debug = require('debug')('pdfizer:zip-builder');
+const debugTemplate = require('debug')('pdfizer:template');
 
 const zipOptions = {
   compression: 'DEFLATE',
@@ -55,7 +57,9 @@ function zipBuilder(rootDir, templateData, otherFiles) {
     const fileName = path.basename(filePath);
     const ext = path.extname(filePath);
 
-    if (ext === '.png' || ext === '.otf') {
+    if (fileName === '.DS_Store') {
+      callback();
+    } else if (ext === '.png' || ext === '.otf') {
       fs.readFile(filePath, (err, data) => {
         debug(`binary: ${filePath}`);
         folders[parent].file(fileName, data, { binary: true });
@@ -69,7 +73,8 @@ function zipBuilder(rootDir, templateData, otherFiles) {
           if (ext === '.html') {
             const template = handlebars.compile(data);
             const resolved = template(templateData);
-            debug(`html: ${filePath}`, resolved);
+            debug(`html: ${filePath}`);
+            debugTemplate(resolved);
             folders[parent].file(fileName, resolved);
           } else {
             debug(`utf8: ${filePath}`);

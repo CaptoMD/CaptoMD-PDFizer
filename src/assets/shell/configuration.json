@@ -1,9 +1,11 @@
 {
   "document": "document.html",
   "javaScriptMode": "ENABLED",
-  "logLevel": "INFO",
   "appendLog": false,
   "userStyleSheets": [
+    {
+      "uri": "https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700"
+    },
     {
       "uri": "assets/md-print-shell.css"
     }

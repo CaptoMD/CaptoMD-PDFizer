@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-<html lang="{{lang}}">
+<html lang="{{documentInfo.lang}}">
 <head>
     <meta charset="UTF-8" />
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700');
-    </style>
 </head>
-<body ng-app="captoAppPrint" data-footer-other-info="{{FOOTER_LOWER}}" data-footer-type-info="{{FOOTER_HIGHER}}" data-footer-title="{{title}}" data-device-detector="" class="is-pdf">
+<body ng-app="captoAppPrint" data-footer-other-info="{{documentInfo.otherInfo}}" data-footer-type-info="{{documentInfo.typeInfo}}" data-footer-title="{{documentInfo.title}}" data-device-detector="" class="is-pdf">
 {{{container}}}
 
 <div id="main">
