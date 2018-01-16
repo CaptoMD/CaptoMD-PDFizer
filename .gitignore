@@ -26,5 +26,6 @@ yarn-error.log*
 
 _seed
 .DS_Store
+.eslintcache
 instructions.md
 /src/docker/pdfreactor-config/fontcache
