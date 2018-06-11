@@ -1,3 +1,5 @@
+[![Known Vulnerabilities](https://snyk.io/test/github/CaptoMD/CaptoMD-PDFizer/badge.svg?targetFile=package.json)](https://snyk.io/test/github/CaptoMD/CaptoMD-PDFizer?targetFile=package.json)
+
 # CaptoMD-PDFizer
 
 An Express server as a PDF factory for CaptoMD medical records, calling 2 separate services: 
