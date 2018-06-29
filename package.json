@@ -1,7 +1,9 @@
 {
   "name": "CaptoMD-pdfizer",
   "version": "1.0.0",
-  "engines" : { "node" : ">=8" },
+  "engines": {
+    "node": ">=8"
+  },
   "description": "Node Express server that generate PDF for CaptoMD",
   "author": "Alain Duchesneau <alain.duchesneau@gmail.com> (https://github.com/zzal)",
   "contributors": [
@@ -16,20 +18,20 @@
     "eslint": "eslint --cache ."
   },
   "dependencies": {
-    "async": "^2.6.0",
-    "body-parser": "^1.18.2",
+    "async": "^2.6.1",
+    "body-parser": "^1.18.3",
     "debug": "^3.1.0",
-    "express": "^4.16.2",
+    "express": "^4.16.3",
     "handlebars": "^4.0.11",
     "jszip": "^3.1.5",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.10",
     "morgan": "^1.9.0",
-    "request": "^2.83.0"
+    "request": "^2.87.0"
   },
   "devDependencies": {
-    "eslint": "^4.15.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1"
+    "eslint": "^5.0.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-node": "^6.0.1"
   }
 }
