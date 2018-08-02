@@ -1,20 +1,22 @@
 ---
+root: true
+
 env:
   node: true
   es6: true
 
 parserOptions:
-  ecmaVersion: 2018
+  ecmaVersion: 2017
 
 plugins:
 - node
+- import
+- prettier
 
 extends:
 - plugin:node/recommended
-- airbnb-base
+- plugin:import/errors
+- plugin:import/warnings
 
 rules:
-  no-unused-vars: [error, {argsIgnorePattern: '^_\w+', caughtErrorsIgnorePattern: '^_\w+'}]
-  no-console: off
-
-
+  prettier/prettier: error
