@@ -13,7 +13,7 @@ const debugTemplate = require('debug')('pdfizer:template');
 
 const zipOptions = {
   compression: 'DEFLATE',
-  platform: 'UNIX',
+  platform: 'UNIX'
 };
 
 /**
@@ -92,15 +92,19 @@ function zipBuilder(rootDir, templateData, otherFiles) {
       if (err) {
         callback(err);
       } else {
-        async.eachSeries(files, (fileItem, cb) => {
-          item(path.resolve(dir, fileItem), cb);
-        }, callback);
+        async.eachSeries(
+          files,
+          (fileItem, cb) => {
+            item(path.resolve(dir, fileItem), cb);
+          },
+          callback
+        );
       }
     });
   }
 
   return new Promise((resolve, reject) => {
-    folder(root, (err) => {
+    folder(root, err => {
       if (err) {
         reject(err);
       } else {

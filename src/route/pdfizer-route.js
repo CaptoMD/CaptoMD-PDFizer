@@ -33,12 +33,12 @@ function pdfizer(requestData) {
 
 function pdfizerRequest(requestData, req, res, next) {
   pdfizer(requestData)
-    .then((finalPDF) => {
+    .then(finalPDF => {
       res.setHeader('Content-disposition', `inline; filename="${requestData.documentInfo.filename || 'output.pdf'}"`);
       res.setHeader('Content-type', 'application/pdf');
       res.send(finalPDF);
     })
-    .catch((reason) => {
+    .catch(reason => {
       debug('pdfizer error', reason);
 
       const err = _.isError(reason) ? reason : new Error(reason);

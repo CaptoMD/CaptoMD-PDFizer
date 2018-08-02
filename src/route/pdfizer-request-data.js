@@ -15,10 +15,13 @@ function pdfizerRequestData(data) {
   if (!data.documentInfo) {
     throw new Error('Request is missing data: documentInfo');
   }
-  const documentInfo = Object.assign({
-    filename: 'output.pdf',
-    lang: 'fr',
-  }, JSON.parse(data.documentInfo));
+  const documentInfo = Object.assign(
+    {
+      filename: 'output.pdf',
+      lang: 'fr'
+    },
+    JSON.parse(data.documentInfo)
+  );
 
   _.set(data, 'documentInfo', documentInfo);
   debug(data);
