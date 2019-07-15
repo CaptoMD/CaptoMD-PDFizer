@@ -13,13 +13,13 @@
   "license": "UNLICENSED",
   "main": "src/index.js",
   "dependencies": {
-    "async": "^2.6.1",
-    "body-parser": "^1.18.3",
+    "async": "^2.6.3",
+    "body-parser": "^1.19.0",
     "debug": "^4.1.1",
-    "express": "^4.16.4",
-    "handlebars": "^4.0.12",
-    "jszip": "^3.1.5",
-    "lodash": "^4.17.11",
+    "express": "^4.17.1",
+    "handlebars": "^4.1.2",
+    "jszip": "^3.2.2",
+    "lodash": "^4.17.14",
     "morgan": "^1.9.1",
     "raven": "^2.6.4",
     "request": "^2.88.0"
@@ -28,13 +28,13 @@
     "eslint"
   ],
   "devDependencies": {
-    "eslint": "^5.12.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-prettier": "^3.0.1",
+    "eslint": "^6.0.1",
+    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
     "pre-commit": "^1.2.2",
-    "prettier": "1.15.3",
-    "snyk": "^1.121.1"
+    "prettier": "1.18.2",
+    "snyk": "^1.193.2"
   },
   "prettier": {
     "singleQuote": true,
