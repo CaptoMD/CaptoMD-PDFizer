@@ -17,12 +17,13 @@
     "body-parser": "^1.19.0",
     "debug": "^4.1.1",
     "express": "^4.17.1",
-    "handlebars": "^4.5.3",
+    "handlebars": "^4.6.0",
     "jszip": "^3.2.2",
     "lodash": "^4.17.14",
     "morgan": "^1.9.1",
     "raven": "^2.6.4",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "snyk": "^1.317.0"
   },
   "pre-commit": [
     "eslint"
@@ -33,8 +34,7 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-prettier": "^3.1.0",
     "pre-commit": "^1.2.2",
-    "prettier": "1.18.2",
-    "snyk": "^1.193.2"
+    "prettier": "1.18.2"
   },
   "prettier": {
     "singleQuote": true,
@@ -43,6 +43,9 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "mocha",
-    "eslint": "eslint --cache ."
-  }
+    "eslint": "eslint --cache .",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
+  },
+  "snyk": true
 }
