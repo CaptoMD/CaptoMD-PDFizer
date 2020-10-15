@@ -51,7 +51,7 @@ router.options('/', (req, res, _next) => {
   res.send({});
 });
 
-router.get('/', (req, res, next) => {
+router.get('/print', (req, res, next) => {
   try {
     const requestData = pdfizerRequestData(req.query);
     pdfizerRequest(requestData, req, res, next);
@@ -62,7 +62,11 @@ router.get('/', (req, res, next) => {
   }
 });
 
-router.post('/', (req, res, next) => {
+router.get('/healthcheck', (req, res) => {
+  res.sendStatus(200);
+});
+
+router.post('/print', (req, res, next) => {
   try {
     const requestData = pdfizerRequestData(req.body);
     pdfizerRequest(requestData, req, res, next);

@@ -16,6 +16,6 @@ COPY . .
 # Run the container under "node" user by default
 USER node
 
-EXPOSE 9440
+EXPOSE 8080
 
 CMD [ "npm", "start" ]
