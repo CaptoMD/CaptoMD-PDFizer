@@ -4,7 +4,7 @@ const app = require('./app');
 /**
  * Get port from environment and store in Express.
  */
-const port = process.env.PORT || 9440;
+const port = process.env.PORT || 8080;
 app.set('port', port);
 
 /**

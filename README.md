@@ -15,7 +15,7 @@ An Express server as a PDF factory for CaptoMD medical records, calling 2 separa
 
 Will download a PDF:
 
-**[POST]** [http://localhost:8400/](http://localhost:8400/) with body payload (`application/json`):
+**[POST]** [http://localhost:8080/](http://localhost:8080/) with body payload (`application/json`):
 
 ```JSON
 {
