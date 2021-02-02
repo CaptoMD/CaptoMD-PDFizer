@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2017 CaptoMD
+ * Copyright (c) 2021 CaptoMD
  */
 
 const express = require('express');
 const debug = require('debug')('pdfizer:router');
 const _ = require('lodash');
 const { URL } = require('url');
+const fs = require('fs');
 
 const zipPdfRequest = require('../pdf/zip-pdf-request');
 const zipBuilder = require('../pdf/zip-builder');
@@ -36,6 +37,18 @@ function pdfizerRequest(requestData, req, res, next) {
     .then(finalPDF => {
       res.setHeader('Content-disposition', `inline; filename="${requestData.documentInfo.filename || 'output.pdf'}"`);
       res.setHeader('Content-type', 'application/pdf');
+
+      if (debug.enabled) {
+        const fileName = `.generated/${new Date().toISOString()}.pdf`
+        debug(`Writing pdf to ${fileName}`);
+        fs.writeFile(fileName, finalPDF, function (err) {
+          if (err) {
+            debug('Errpr while writing to file:', err)
+            return console.log(err);
+          }
+        });
+      }
+
       res.send(finalPDF);
     })
     .catch(reason => {
