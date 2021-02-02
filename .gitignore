@@ -29,3 +29,4 @@ _seed
 .eslintcache
 instructions.md
 /src/docker/pdfreactor-config/fontcache
+.generated/

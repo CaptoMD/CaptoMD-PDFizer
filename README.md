@@ -9,7 +9,11 @@ An Express server as a PDF factory for CaptoMD medical records, calling 2 separa
 
 ## Getting started
 
-*Installation procedures description to come…*
+### Start locally
+
+1. Install the dependencies if needed `npm install`
+2. Adjust environment variables as needed in `run-local.env`
+3. Start the server by running `npm run start-local`
 
 ## Generating a PDF
 
