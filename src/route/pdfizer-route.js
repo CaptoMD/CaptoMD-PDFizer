@@ -39,11 +39,11 @@ function pdfizerRequest(requestData, req, res, next) {
       res.setHeader('Content-type', 'application/pdf');
 
       if (debug.enabled) {
-        const fileName = `.generated/${new Date().toISOString()}.pdf`
+        const fileName = `.generated/${new Date().toISOString()}.pdf`;
         debug(`Writing pdf to ${fileName}`);
-        fs.writeFile(fileName, finalPDF, function (err) {
+        fs.writeFile(fileName, finalPDF, function(err) {
           if (err) {
-            debug('Errpr while writing to file:', err)
+            debug('Errpr while writing to file:', err);
             return console.log(err);
           }
         });
