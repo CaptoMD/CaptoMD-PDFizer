@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{documentInfo.lang}}">
+<head>
+    <meta charset="UTF-8" />
+</head>
+<body ng-app="captoAppPrint" data-footer-other-info="{{documentInfo.otherInfo}}" data-footer-type-info="{{documentInfo.typeInfo}}" data-footer-title="{{documentInfo.title}}" class="is-pdf">
+{{{container}}}
+
+<div id="main">
+    <div>
+        <img src="content.pdf" style="-ro-source-page: 1;" id="inserted-document">
+    </div>
+</div>
+
+<script type="text/javascript">
+    function getPDFinfos() {
+        var target = document.getElementById('inserted-document');
+        var pageCount = target.roPageCount;
+        if (pageCount > 1)
+        {
+            var parentNode = document.getElementById('main');
+
+            for (var i = 2; i <= pageCount; i++) {
+                var divElem = document.createElement('DIV');
+                divElem.setAttribute('style', 'page-break-before: always;');
+                var imgElem = document.createElement('IMG');
+                imgElem.src = 'content.pdf';
+                imgElem.setAttribute('style', '-ro-source-page: ' + i + ';');
+                divElem.appendChild(imgElem);
+                parentNode.appendChild(divElem);
+            }
+        }
+    }
+    document.addEventListener('DOMContentLoaded', getPDFinfos);
+</script>
+
+</body>
+</html>
