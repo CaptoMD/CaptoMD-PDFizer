@@ -21,13 +21,17 @@ const electronPdfUrl = process.env.ELECTRON_PDF_SERVICE_URL || 'http://localhost
 const pdfReactorUrl = process.env.PDF_REACTOR_SERVICE_URL || 'http://localhost:9423/';
 
 const electronPdfZipRoot = process.env.ELECTRON_PDF_ROOT_ZIP || 'src/assets/content';
-const pdfReactorZipRoot = process.env.PDF_REACTOR_ROOT_ZIP || 'src/assets/shell';
 
 const electronPdfRequest = _.partial(zipPdfRequest, electronPdfUrl);
 const pdfReactorRequest = _.partial(zipPdfRequest, new URL('/service/rest/convert.pdf', pdfReactorUrl));
 
-function pdfizer(requestData) {
+function pdfizer(requestData, duplicata = true) {
   debug('Processing pdfizer request.');
+  let pdfReactorZipRoot = process.env.PDF_REACTOR_ROOT_ZIP || 'src/assets/shell';
+
+  if (duplicata) {
+    pdfReactorZipRoot = 'src/assets/shell-duplicata';
+  }
 
   return zipBuilder(electronPdfZipRoot, requestData)
     .then(electronPdfRequest)
@@ -55,8 +59,18 @@ function pdfizerRequest(requestData, res, next) {
     pdfizer(requestData)
       .then(duplicataPDF => {
         // If all goes well, we launch the second generation and send to DPE
-        pdfizer(requestData)
+        pdfizer(requestData, false)
           .then(finalPDFToSendToDPE => {
+            if (debug.enabled) {
+              const fileName = `.generated/${new Date().toISOString()}.pdf`;
+              debug(`Writing pdf to ${fileName}`);
+              fs.writeFile(fileName, finalPDFToSendToDPE, function(err) {
+                if (err) {
+                  debug('Errpr while writing to file:', err);
+                  return console.log(err);
+                }
+              });
+            }
             let fhirDocumentReference = new DocumentReference(
               requestData.documentInfo.fhirPatientId,
               requestData.documentInfo.fhirPractitionerId,
@@ -70,7 +84,7 @@ function pdfizerRequest(requestData, res, next) {
           })
           .then(_fhirTaskResponse => {
             if (debug.enabled) {
-              const fileName = `.generated/${new Date().toISOString()}.pdf`;
+              const fileName = `.generated/${new Date().toISOString()}-duplicata.pdf`;
               debug(`Writing pdf to ${fileName}`);
               fs.writeFile(fileName, duplicataPDF, function(err) {
                 if (err) {
