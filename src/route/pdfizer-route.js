@@ -66,7 +66,7 @@ function pdfizerRequest(requestData, res, next) {
               debug(`Writing pdf to ${fileName}`);
               fs.writeFile(fileName, finalPDFToSendToDPE, function(err) {
                 if (err) {
-                  debug('Errpr while writing to file:', err);
+                  debug('Error while writing to file:', err);
                   return console.log(err);
                 }
               });
