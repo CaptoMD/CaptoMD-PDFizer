@@ -7,6 +7,9 @@ const debug = require('debug')('pdfizer:router');
 const _ = require('lodash');
 const { URL } = require('url');
 const fs = require('fs');
+const DocumentReference = require('../fhirServer/DocumentReference');
+const Task = require('../fhirServer/Task');
+const fhirRequest = require('../fhirServer/fhirHttpsPromise');
 
 const zipPdfRequest = require('../pdf/zip-pdf-request');
 const zipBuilder = require('../pdf/zip-builder');
@@ -32,32 +35,71 @@ function pdfizer(requestData) {
     .then(pdfReactorRequest);
 }
 
-function pdfizerRequest(requestData, req, res, next) {
-  pdfizer(requestData)
-    .then(finalPDF => {
-      res.setHeader('Content-disposition', `inline; filename="${requestData.documentInfo.filename || 'output.pdf'}"`);
-      res.setHeader('Content-type', 'application/pdf');
+function handleError(statusCode, message) {
+  debug('pdfizer error', message);
+  const err = _.isError(message) ? message : new Error(message);
+  err.status = statusCode;
+  return err;
+}
 
-      if (debug.enabled) {
-        const fileName = `.generated/${new Date().toISOString()}.pdf`
-        debug(`Writing pdf to ${fileName}`);
-        fs.writeFile(fileName, finalPDF, function (err) {
-          if (err) {
-            debug('Errpr while writing to file:', err)
-            return console.log(err);
-          }
-        });
-      }
+function sendReponseToFrontend(res, requestData, duplicataPDF) {
+  res.setHeader('Content-disposition', `inline; filename="${requestData.documentInfo.filename || 'output.pdf'}"`);
+  res.setHeader('Content-type', 'application/pdf');
+  res.send(duplicataPDF);
+}
 
-      res.send(finalPDF);
-    })
-    .catch(reason => {
-      debug('pdfizer error', reason);
-
-      const err = _.isError(reason) ? reason : new Error(reason);
-      err.status = 424;
-      next(err);
-    });
+function pdfizerRequest(requestData, res, next) {
+  // Generate 2 pdf and send 1 to DPE and return the other to client
+  if (requestData.documentInfo.pushUrl) {
+    const url = requestData.documentInfo.pushUrl;
+    pdfizer(requestData)
+      .then(duplicataPDF => {
+        // If all goes well, we launch the second generation and send to DPE
+        pdfizer(requestData)
+          .then(finalPDFToSendToDPE => {
+            let fhirDocumentReference = new DocumentReference(
+              requestData.documentInfo.fhirPatientId,
+              requestData.documentInfo.fhirPractitionerId,
+              finalPDFToSendToDPE.toString('base64')
+            );
+            return fhirRequest(url, '/DocumentReference/', 'POST', fhirDocumentReference);
+          })
+          .then(fhirDocumentReferenceResponse => {
+            let fhirTask = new Task(JSON.parse(fhirDocumentReferenceResponse.body).id);
+            return fhirRequest(url, '/Task/', 'POST', fhirTask);
+          })
+          .then(_fhirTaskResponse => {
+            if (debug.enabled) {
+              const fileName = `.generated/${new Date().toISOString()}.pdf`;
+              debug(`Writing pdf to ${fileName}`);
+              fs.writeFile(fileName, duplicataPDF, function(err) {
+                if (err) {
+                  debug('Errpr while writing to file:', err);
+                  return console.log(err);
+                }
+              });
+            }
+            sendReponseToFrontend(res, requestData, duplicataPDF);
+          })
+          .catch(error => {
+            debug('pdfizer error', error);
+            next(handleError(error.statusCode, error.body));
+          });
+      })
+      .catch(error => {
+        debug('pdfizer error', error);
+        next(handleError(error.statusCode, error.body));
+      });
+  } else {
+    pdfizer(requestData)
+      .then(finalPDF => {
+        sendReponseToFrontend(res, requestData, finalPDF);
+      })
+      .catch(error => {
+        debug('pdfizer error', error);
+        next(handleError(error.statusCode, error.body));
+      });
+  }
 }
 
 router.options('/', (req, res, _next) => {
@@ -67,11 +109,10 @@ router.options('/', (req, res, _next) => {
 router.get('/print', (req, res, next) => {
   try {
     const requestData = pdfizerRequestData(req.query);
-    pdfizerRequest(requestData, req, res, next);
+    pdfizerRequest(requestData, res, next);
   } catch (error) {
     debug('pdfizer error', error);
-    error.status = 417;
-    next(error);
+    next(handleError(417, 'Expectation Failed'));
   }
 });
 
@@ -82,11 +123,10 @@ router.get('/healthcheck', (req, res) => {
 router.post('/print', (req, res, next) => {
   try {
     const requestData = pdfizerRequestData(req.body);
-    pdfizerRequest(requestData, req, res, next);
+    pdfizerRequest(requestData, res, next);
   } catch (error) {
     debug('pdfizer error', error);
-    error.status = 417;
-    next(error);
+    next(handleError(417, 'Expectation Failed'));
   }
 });
 
