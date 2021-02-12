@@ -16,11 +16,13 @@ class DocumentReference {
       reference: 'Patient/' + patientId
     };
     this.date = new Date().toISOString();
-    this.author = [
-      {
-        reference: 'Practitioner/' + practitionerId
-      }
-    ];
+    if (practitionerId) {
+      this.author = [
+        {
+          reference: 'Practitioner/' + practitionerId
+        }
+      ];
+    }
     this.content = [
       {
         attachment: {
