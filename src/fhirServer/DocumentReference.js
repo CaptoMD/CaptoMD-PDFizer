@@ -1,25 +1,37 @@
+const dayjs = require('dayjs');
+
 class DocumentReference {
-  constructor(patientId, practitionerId, data) {
+  constructor({ fhirPatientId, fhirPractitionerId, coding }, pdf) {
+    const now = new Date();
     this.resourceType = 'DocumentReference';
     this.status = 'current';
     this.docStatus = 'final';
-    this.type = {
-      coding: [
-        {
-          system: 'http://loinc.org',
-          code: '34779-9',
-          display: 'Hematology+Medical Oncology Consult note'
-        }
-      ]
-    };
+    this.identifier = [
+      {
+        use: 'official',
+        type: {
+          coding: [
+            {
+              system: 'http://terminology.hl7.org/CodeSystem/v2-0203',
+              code: 'FILL'
+            }
+          ]
+        },
+        system: 'https://chuq.captomd.io/filler-order-number',
+        value: `${dayjs(now).format('YYMMDDHHmmss')}-${fhirPatientId}`
+      }
+    ];
+    if (coding) {
+      this.type = { coding: coding };
+    }
     this.subject = {
-      reference: 'Patient/' + patientId
+      reference: 'Patient/' + fhirPatientId
     };
-    this.date = new Date().toISOString();
-    if (practitionerId) {
+    this.date = now.toISOString();
+    if (fhirPractitionerId) {
       this.author = [
         {
-          reference: 'Practitioner/' + practitionerId
+          reference: 'Practitioner/' + fhirPractitionerId
         }
       ];
     }
@@ -27,7 +39,7 @@ class DocumentReference {
       {
         attachment: {
           contentType: 'application/pdf;charset=utf-8',
-          data: data
+          data: pdf.toString('base64')
         }
       }
     ];

@@ -71,11 +71,7 @@ function pdfizerRequest(requestData, res, next) {
                 }
               });
             }
-            let fhirDocumentReference = new DocumentReference(
-              requestData.documentInfo.fhirPatientId,
-              requestData.documentInfo.fhirPractitionerId,
-              finalPDFToSendToDPE.toString('base64')
-            );
+            const fhirDocumentReference = new DocumentReference(requestData.documentInfo, finalPDFToSendToDPE);
             return fhirRequest(url, '/DocumentReference/', 'POST', fhirDocumentReference);
           })
           .then(fhirDocumentReferenceResponse => {
