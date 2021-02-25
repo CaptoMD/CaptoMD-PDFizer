@@ -43,6 +43,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
+    "debug": "DEBUG=pdfizer:* node src/index.js",
     "start-local": "node --require dotenv/config src/index.js dotenv_config_path=run-local.env",
     "test": "mocha",
     "eslint": "eslint --cache .",
