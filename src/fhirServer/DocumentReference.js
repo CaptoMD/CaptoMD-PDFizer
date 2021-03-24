@@ -23,6 +23,16 @@ class DocumentReference {
     ];
     if (coding) {
       this.type = { coding: coding };
+    } else {
+      this.type = {
+        coding: [
+          {
+            system: 'http://loinc.org',
+            code: '34779-9',
+            display: 'Hematology+Medical Oncology Consult note'
+          }
+        ]
+      };
     }
     this.subject = {
       reference: 'Patient/' + fhirPatientId
