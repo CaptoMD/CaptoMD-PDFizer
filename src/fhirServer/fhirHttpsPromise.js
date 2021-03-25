@@ -27,6 +27,7 @@ module.exports = (url, path, method, obj) => {
         if (res.statusCode >= 200 && res.statusCode <= 299) {
           resolve({ statusCode: res.statusCode, headers: res.headers, body: body });
         } else {
+          console.error('Fhir Server Error', { statusCode: res.statusCode, body: body });
           reject({ statusCode: res.statusCode, body: body });
         }
       });
