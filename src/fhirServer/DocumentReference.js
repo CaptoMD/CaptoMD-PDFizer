@@ -48,8 +48,8 @@ class DocumentReference {
     this.content = [
       {
         attachment: {
-          contentType: 'application/pdf;charset=utf-8',
-          data: pdf.toString('base64')
+          contentType: 'application/pdf;charset=utf-8'
+          // data: pdf.toString('base64')
         }
       }
     ];
