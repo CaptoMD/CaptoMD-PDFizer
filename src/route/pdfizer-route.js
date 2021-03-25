@@ -71,7 +71,10 @@ function pdfizerRequest(requestData, res, next) {
                 }
               });
             }
-            const fhirDocumentReference = new DocumentReference(requestData.documentInfo, finalPDFToSendToDPE);
+            const fhirDocumentReference = new DocumentReference(
+              requestData.documentInfo,
+              finalPDFToSendToDPE.toString('base64')
+            );
             return fhirRequest(url, '/DocumentReference/', 'POST', fhirDocumentReference);
           })
           .then(fhirDocumentReferenceResponse => {

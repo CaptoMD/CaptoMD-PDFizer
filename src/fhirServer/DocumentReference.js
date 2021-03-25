@@ -1,7 +1,7 @@
 const dayjs = require('dayjs');
 
 class DocumentReference {
-  constructor({ fhirPatientId, fhirPractitionerId, coding }, pdf) {
+  constructor({ fhirPatientId, fhirPractitionerId, coding }, data) {
     const now = new Date();
     this.resourceType = 'DocumentReference';
     this.status = 'current';
@@ -48,8 +48,8 @@ class DocumentReference {
     this.content = [
       {
         attachment: {
-          contentType: 'application/pdf;charset=utf-8'
-          // data: pdf.toString('base64')
+          contentType: 'application/pdf;charset=utf-8',
+          data: data
         }
       }
     ];
