@@ -13,8 +13,7 @@ module.exports = (url, path, method, obj) => {
       path: fullPath,
       method: method,
       headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': data.length
+        'Content-Type': 'application/json'
       }
     };
     console.info('data sent to server', data);
