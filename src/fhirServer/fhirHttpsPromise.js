@@ -17,7 +17,7 @@ module.exports = (url, path, method, obj) => {
         'Content-Length': data.length
       }
     };
-    console.log('data sent to server', data);
+    console.info('data sent to server', data);
     const req = https.request(options, res => {
       let body = '';
       res.on('data', chunk => (body += chunk.toString()));
