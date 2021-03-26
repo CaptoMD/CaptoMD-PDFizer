@@ -1,6 +1,6 @@
 'use strict';
 
-const https = require('https');
+const http = require('http');
 
 module.exports = (url, path, method, obj) => {
   return new Promise((resolve, reject) => {
@@ -17,7 +17,7 @@ module.exports = (url, path, method, obj) => {
       }
     };
     console.info('data sent to FHir Server', options);
-    const req = https.request(options, res => {
+    const req = http.request(options, res => {
       let body = '';
       res.on('data', chunk => (body += chunk.toString()));
       res.on('error', () => {
@@ -26,7 +26,7 @@ module.exports = (url, path, method, obj) => {
       });
       res.on('end', () => {
         if (res.statusCode >= 200 && res.statusCode <= 299) {
-          console.error('Fhir Server Success', { statusCode: res.statusCode, body: body });
+          console.info('Fhir Server Success', { statusCode: res.statusCode, body: body });
           resolve({ statusCode: res.statusCode, headers: res.headers, body: body });
         } else {
           console.error('Fhir Server Error', { statusCode: res.statusCode, body: body });
