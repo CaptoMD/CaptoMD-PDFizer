@@ -40,7 +40,7 @@ function pdfizer(requestData, duplicata = true) {
 }
 
 function handleError(statusCode, message) {
-  debug('pdfizer error', message);
+  console.error('pdfizer error', message);
   const err = _.isError(message) ? message : new Error(message);
   err.status = statusCode;
   return err;
@@ -66,7 +66,7 @@ function pdfizerRequest(requestData, res, next) {
               debug(`Writing pdf to ${fileName}`);
               fs.writeFile(fileName, finalPDFToSendToDPE, function(err) {
                 if (err) {
-                  debug('Error while writing to file:', err);
+                  console.error('Error while writing to file:', err);
                   return console.log(err);
                 }
               });
@@ -87,20 +87,20 @@ function pdfizerRequest(requestData, res, next) {
               debug(`Writing pdf to ${fileName}`);
               fs.writeFile(fileName, duplicataPDF, function(err) {
                 if (err) {
-                  debug('Errpr while writing to file:', err);
-                  return console.log(err);
+                  console.error('Errpr while writing to file:', err);
+                  return err;
                 }
               });
             }
             sendReponseToFrontend(res, requestData, duplicataPDF);
           })
           .catch(error => {
-            debug('pdfizer error', error);
+            console.error('pdfizer error', error);
             next(handleError(error.statusCode, error.body));
           });
       })
       .catch(error => {
-        debug('pdfizer error', error);
+        console.error('pdfizer error', error);
         next(handleError(error.statusCode, error.body));
       });
   } else {
@@ -109,7 +109,7 @@ function pdfizerRequest(requestData, res, next) {
         sendReponseToFrontend(res, requestData, finalPDF);
       })
       .catch(error => {
-        debug('pdfizer error', error);
+        console.error('pdfizer error', error);
         next(handleError(error.statusCode, error.body));
       });
   }
@@ -124,7 +124,7 @@ router.get('/print', (req, res, next) => {
     const requestData = pdfizerRequestData(req.query);
     pdfizerRequest(requestData, res, next);
   } catch (error) {
-    debug('pdfizer error', error);
+    console.error('pdfizer error', error);
     next(handleError(417, 'Expectation Failed'));
   }
 });
@@ -138,7 +138,7 @@ router.post('/print', (req, res, next) => {
     const requestData = pdfizerRequestData(req.body);
     pdfizerRequest(requestData, res, next);
   } catch (error) {
-    debug('pdfizer error', error);
+    console.error('pdfizer error', error);
     next(handleError(417, 'Expectation Failed'));
   }
 });

@@ -16,15 +16,17 @@ module.exports = (url, path, method, obj) => {
         'Content-Type': 'application/json'
       }
     };
-    console.info('data sent to server', data);
+    console.info('data sent to FHir Server', options);
     const req = https.request(options, res => {
       let body = '';
       res.on('data', chunk => (body += chunk.toString()));
       res.on('error', () => {
+        console.error('Fhir Server Error', { status: 500, body: 'Internal Server Error' });
         reject({ status: 500, body: 'Internal Server Error' });
       });
       res.on('end', () => {
         if (res.statusCode >= 200 && res.statusCode <= 299) {
+          console.error('Fhir Server Success', { statusCode: res.statusCode, body: body });
           resolve({ statusCode: res.statusCode, headers: res.headers, body: body });
         } else {
           console.error('Fhir Server Error', { statusCode: res.statusCode, body: body });
@@ -33,6 +35,7 @@ module.exports = (url, path, method, obj) => {
       });
     });
     req.on('error', () => {
+      console.error('Fhir Server Error', { status: 500, body: 'Internal Server Error' });
       reject({ status: 500, body: 'Internal Server Error' });
     });
     req.write(data);
