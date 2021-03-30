@@ -1,10 +1,12 @@
 'use strict';
 
 const http = require('http');
+const https = require('https');
 
 module.exports = (url, path, method, obj) => {
   return new Promise((resolve, reject) => {
     const splitedUrl = url.split('/');
+    const protocol = splitedUrl[2];
     const hostName = splitedUrl[2];
     const fullPath = '/' + splitedUrl[3] + path;
     const data = JSON.stringify(obj);
@@ -16,8 +18,15 @@ module.exports = (url, path, method, obj) => {
         'Content-Type': 'application/json'
       }
     };
-    console.info('data sent to FHir Server', options);
-    const req = http.request(options, res => {
+    let handler;
+    if (protocol === 'https:') {
+      console.info('sending over https to FHir Server', url, options);
+      handler = https;
+    } else {
+      console.info('sending over http to FHir Server', url, options);
+      handler = http;
+    }
+    const req = handler.request(options, res => {
       let body = '';
       res.on('data', chunk => (body += chunk.toString()));
       res.on('error', () => {
