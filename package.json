@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "handlebars": "^4.6.0",
     "jszip": "^3.2.2",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "morgan": "^1.9.1",
     "raven": "^2.6.4",
     "request": "^2.88.0",
