@@ -13,7 +13,7 @@
   "license": "UNLICENSED",
   "main": "src/index.js",
   "dependencies": {
-    "async": "^2.6.3",
+    "async": "^3.2.2",
     "body-parser": "^1.19.0",
     "dayjs": "^1.10.4",
     "debug": "^4.1.1",
