@@ -14,18 +14,18 @@
   "main": "src/index.js",
   "dependencies": {
     "async": "^2.6.3",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.19.2",
     "dayjs": "^1.10.4",
     "debug": "^4.1.1",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "handlebars": "^4.6.0",
     "jszip": "^3.2.2",
     "lodash": "^4.17.20",
     "morgan": "^1.9.1",
     "raven": "^2.6.4",
     "request": "^2.88.0",
-    "snyk": "^1.413.5"
+    "snyk": "^1.1064.0"
   },
   "pre-commit": [
     "eslint"
