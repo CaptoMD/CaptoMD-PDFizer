@@ -20,12 +20,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "handlebars": "^4.6.0",
-    "jszip": "^3.2.2",
+    "jszip": "^3.8.0",
     "lodash": "^4.17.20",
     "morgan": "^1.9.1",
     "raven": "^2.6.4",
     "request": "^2.88.0",
-    "snyk": "^1.413.5"
+    "snyk": "^1.518.0"
   },
   "pre-commit": [
     "eslint"
